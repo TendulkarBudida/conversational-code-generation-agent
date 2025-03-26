@@ -44,4 +44,6 @@ next-env.d.ts
 
 
 
-steps.md
+/md_files
+
+.env.local
