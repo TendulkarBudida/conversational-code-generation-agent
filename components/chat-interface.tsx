@@ -80,6 +80,12 @@ export function ChatInterface({
     }
   }, [enhancedPhotoUrl]);
 
+  // Ensure light mode is the default mode
+  useEffect(() => {
+    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("light");
+  }, []);
+
   const scrollToBottom = () => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" })
   }
@@ -205,7 +211,7 @@ export function ChatInterface({
 
   return (
     <div className="flex-1 flex flex-col h-[calc(100vh-2rem)]">
-      <div className="border-b border-gray-100 px-6 py-3 bg-white shadow-sm flex items-center gap-3">
+      <div className="border-b border-gray-100 px-3 md:px-6 py-3 bg-white shadow-sm flex items-center gap-2 md:gap-3">
         <button
           onClick={toggleSidebar}
           className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 hover:bg-blue-600 text-white transition-all z-50"
@@ -213,32 +219,32 @@ export function ChatInterface({
         >
           <MenuIcon size={18} />
         </button>
-        <h1 className="text-lg font-semibold text-gray-800">Mugen Code Session</h1>
+        <h1 className="text-base md:text-lg font-semibold text-gray-800 truncate">Mugen Code Session</h1>
       </div>
       
-      <ScrollArea className="flex-1 px-6">
+      <ScrollArea className="flex-1 px-2 md:px-6">
         {messages.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center h-[50vh]">
-            <div className="text-center max-w-md bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <div className="bg-blue-50 p-3 rounded-full w-14 h-14 mx-auto mb-4 flex items-center justify-center">
-                <MessageSquare className="h-7 w-7 text-blue-500" />
+            <div className="text-center max-w-md bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100 mx-2">
+              <div className="bg-blue-50 p-3 rounded-full w-12 h-12 md:w-14 md:h-14 mx-auto mb-4 flex items-center justify-center">
+                <MessageSquare className="h-6 w-6 md:h-7 md:w-7 text-blue-500" />
               </div>
-              <h1 className="text-2xl font-bold mb-2 text-gray-800">Welcome to Mugen Code</h1>
-              <p className="text-gray-500 mb-4">
-                Start a conversation by typing a message below. Ask for code examples, explanations, or help with programming challenges in Mugen Code.
+              <h1 className="text-xl md:text-2xl font-bold mb-2 text-gray-800">Welcome to Mugen Code</h1>
+              <p className="text-gray-500 text-sm md:text-base mb-4">
+                Start a conversation by typing a message below. Ask for code examples, explanations, or help with programming challenges.
               </p>
             </div>
           </div>
         ) : (
-          <div className="space-y-6 pb-4">
+          <div className="space-y-4 md:space-y-6 pb-4">
             {messages.map((message, index) => (
               <div 
                 key={message.id} 
                 className={`fade-in animation-delay-${index % 5}`}
                 style={{animationDelay: `${index * 0.1}s`}}
               >
-                <div className="flex items-start gap-3 mt-4">
-                  <Avatar className="h-9 w-9 mt-1">
+                <div className="flex items-start gap-2 md:gap-3 mt-4">
+                  <Avatar className="h-8 w-8 md:h-9 md:w-9 mt-1 flex-shrink-0">
                     {message.role === "user" ? (
                       enhancedPhotoUrl && !photoError ? (
                         <>
@@ -266,18 +272,18 @@ export function ChatInterface({
                     )}
                   </Avatar>
 
-                  <div className={`flex-1 ${message.role === "user" ? "pr-12" : "pr-4"}`}>
+                  <div className={`flex-1 ${message.role === "user" ? "pr-8 md:pr-12" : "pr-2 md:pr-4"}`}>
                     <div className="flex items-center text-xs text-gray-500 mb-1.5">
                       <span className="font-medium">
                         {message.role === "user" ? (user?.displayName || user?.email || "You") : "Mugen"}
                       </span>
                       <span className="mx-2">•</span>
-                      <span>
+                      <span className="hidden sm:inline">
                         {new Date(message.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                       </span>
                     </div>
                     
-                    <div className={`text-sm p-4 ${
+                    <div className={`text-xs md:text-sm p-3 md:p-4 ${
                       message.role === "user" 
                         ? "bg-blue-50 message-bubble-user text-gray-800" 
                         : "bg-white border border-gray-100 shadow-sm message-bubble text-gray-700"
@@ -290,10 +296,10 @@ export function ChatInterface({
                         <Button 
                           variant="outline" 
                           size="icon" 
-                          className="h-8 w-8 rounded-full border-gray-200 hover:bg-gray-50 hover:text-blue-600"
+                          className="h-7 w-7 md:h-8 md:w-8 rounded-full border-gray-200 hover:bg-gray-50 hover:text-blue-600"
                           onClick={() => handleCopyToClipboard(message.content)}
                         >
-                          <Copy className="h-4 w-4" />
+                          <Copy className="h-3 w-3 md:h-4 md:w-4" />
                         </Button>
 
                         <Button 
@@ -308,7 +314,7 @@ export function ChatInterface({
                           ) : (
                             <RefreshCw className="h-3 w-3" />
                           )}
-                          Regenerate
+                          <span className="hidden sm:inline">Regenerate</span>
                         </Button>
                       </div>
                     )}
@@ -320,20 +326,20 @@ export function ChatInterface({
         )}
         
         {isGenerating && (
-          <div className="flex items-center gap-3 my-6 fade-in">
-            <Avatar className="h-9 w-9 ring-2 ring-blue-100 ring-offset-2">
+          <div className="flex items-center gap-2 md:gap-3 my-4 md:my-6 fade-in">
+            <Avatar className="h-8 w-8 md:h-9 md:w-9 flex-shrink-0">
               <div className="bg-white h-full w-full flex items-center justify-center border-2 border-blue-100 rounded-full text-xs font-semibold text-blue-600">
                 AI
               </div>
             </Avatar>
-            <div className="bg-white border border-gray-100 shadow-sm message-bubble py-3 px-4">
+            <div className="bg-white border border-gray-100 shadow-sm message-bubble py-2 md:py-3 px-3 md:px-4">
               <div className="flex items-center gap-2 text-gray-500">
                 <div className="flex space-x-1">
                   <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "0ms" }}></div>
                   <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "300ms" }}></div>
                   <div className="h-2 w-2 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: "600ms" }}></div>
                 </div>
-                <span className="text-sm font-medium text-gray-500">Generating response...</span>
+                <span className="text-xs md:text-sm font-medium text-gray-500">Generating...</span>
               </div>
             </div>
           </div>
@@ -342,7 +348,7 @@ export function ChatInterface({
         <div ref={endOfMessagesRef} />
       </ScrollArea>
 
-      <div className="p-4 border-t border-gray-100 bg-white">
+      <div className="p-3 md:p-4 border-t border-gray-100 bg-white">
         <Form {...form}>
           <form onSubmit={handleSend} className="relative">
             <FormField
@@ -356,19 +362,19 @@ export function ChatInterface({
                         {...field}
                         ref={inputRef}
                         placeholder="Message Mugen..."
-                        className="pr-12 py-6 rounded-full border-gray-200 focus:border-blue-300 shadow-sm pl-4 bg-white text-gray-800"
+                        className="pr-12 py-5 md:py-6 rounded-full border-gray-200 focus:border-blue-300 shadow-sm pl-3 md:pl-4 bg-white text-gray-800 text-sm md:text-base"
                         disabled={isGenerating}
                       />
                       <Button
                         type="submit"
                         size="icon"
                         disabled={!field.value.trim() || isGenerating}
-                        className="absolute right-1.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 h-9 w-9 rounded-full shadow-sm transition-all duration-200 ease-in-out"
+                        className="absolute right-1 md:right-1.5 top-1/2 transform -translate-y-1/2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 h-8 w-8 md:h-9 md:w-9 rounded-full shadow-sm transition-all duration-200 ease-in-out"
                       >
                         {isGenerating ? (
-                          <Loader className="h-4 w-4 text-white animate-spin" />
+                          <Loader className="h-3.5 w-3.5 md:h-4 md:w-4 text-white animate-spin" />
                         ) : (
-                          <Send className="h-4 w-4 text-white" />
+                          <Send className="h-3.5 w-3.5 md:h-4 md:w-4 text-white" />
                         )}
                       </Button>
                     </div>
@@ -378,7 +384,7 @@ export function ChatInterface({
             />
           </form>
         </Form>
-        <div className="text-xs text-center mt-2 text-gray-400">
+        <div className="text-[10px] md:text-xs text-center mt-2 text-gray-400">
           Connect with me on <a href="https://www.linkedin.com/in/tendulkarbudida" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">LinkedIn</a> or <a href="https://github.com/tendulkarbudida" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">GitHub</a>.
         </div>
       </div>
