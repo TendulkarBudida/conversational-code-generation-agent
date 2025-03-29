@@ -34,10 +34,10 @@ export async function POST(request: NextRequest) {
       Respond with ONLY the word "simple", "complex", or "ambiguous".
       Query: "${query}"`
     );
-    
+
     const queryType = complexityAnalysis.trim().toLowerCase().replace(/[^a-z]/g, '');
     console.log("Query classified as:", queryType);
-    
+
     // Process based on complexity
     if (queryType.includes("ambiguous")) {
       return handleAmbiguousQuery(query);
@@ -63,13 +63,11 @@ async function handleAmbiguousQuery(query: string) {
     Please provide helpful feedback on what details are needed to generate the code.
     Be specific about what information is missing (e.g., programming language, input/output format, etc.).`
   );
-  
-  return NextResponse.json({ 
-    code: `/* 
-${feedback}
 
-Please provide more details so I can generate the appropriate code for you.
-*/`,
+  console.log("Ambiguous query feedback:", feedback);
+
+  return NextResponse.json({ 
+    code: ` ${feedback}\n\nPlease provide more details so I can generate the appropriate code for you.`,
     feedback,
     ambiguous: true
   });
@@ -84,6 +82,8 @@ async function handleSimpleQuery(query: string) {
     Include proper error handling and follow best practices for the chosen programming language.
     Focus on writing efficient, readable code that directly addresses the request.`
   );
+  
+  console.log("Simple query result:", code.substring(0, 100) + "...");
   
   return NextResponse.json({ 
     code,
@@ -101,10 +101,13 @@ async function handleComplexQuery(query: string) {
     `You are a programming assistant. Understand this coding request and convert it into a clear, detailed specification: "${query}"`
   );
   
+  console.log("Interpretation complete:", interpretation.substring(0, 150) + "...");
+  
   // Check if interpretation reveals ambiguity
   if (interpretation.toLowerCase().includes("unclear") || 
       interpretation.toLowerCase().includes("ambiguous") || 
       interpretation.toLowerCase().includes("need more information")) {
+    console.log("Interpretation indicates ambiguity, redirecting to ambiguous handler");
     return handleAmbiguousQuery(query);
   }
 
@@ -114,6 +117,7 @@ async function handleComplexQuery(query: string) {
     const [directCodePath, interpretedCodePath] = await Promise.all([
       // PATH 1: Direct code generation with enhancement
       (async () => {
+        console.log("PATH 1: Starting direct code generation");
         // Generate code directly from query
         const directCode = await callOpenrouter(
           MODELS.generator,
@@ -121,6 +125,7 @@ async function handleComplexQuery(query: string) {
           Include proper error handling and follow best practices.`
         );
         
+        console.log("PATH 1: Starting code enhancement");
         // Enhance direct code
         const enhancedDirectCode = await callOpenrouter(
           MODELS.instructTuned,
@@ -128,23 +133,27 @@ async function handleComplexQuery(query: string) {
           mentioned in this request: "${query}"\n\nCode:\n${directCode}`
         );
         
+        console.log("PATH 1: Complete");
         return { directCode, enhancedDirectCode };
       })(),
       
       // PATH 2: Interpreted code generation with enhancement
       (async () => {
+        console.log("PATH 2: Starting interpreted code generation");
         // Generate code from interpretation
         const interpretedCode = await callOpenrouter(
           MODELS.generator,
           `Generate clean, well-commented code based on this specification: "${interpretation}"`
         );
         
+        console.log("PATH 2: Starting code enhancement");
         // Enhance interpreted code
         const enhancedInterpretedCode = await callOpenrouter(
           MODELS.instructTuned,
           `Improve this code for better performance, readability, and error handling:\n\n${interpretedCode}`
         );
         
+        console.log("PATH 2: Complete");
         return { interpretedCode, enhancedInterpretedCode };
       })()
     ]);
@@ -158,6 +167,7 @@ async function handleComplexQuery(query: string) {
       Respond with ONLY the complete selected implementation, no explanation needed.`;
     
     const bestImplementation = await callOpenrouter(MODELS.reviewer, selectionPrompt);
+    console.log("Best implementation selected.");
     
     // STEP 6: Final review and polishing
     console.log("Performing final code review...");
@@ -167,6 +177,8 @@ async function handleComplexQuery(query: string) {
       Add thorough comments explaining the key components and any optimizations you've made.
       Provide the final, improved version:\n\n${bestImplementation}`
     );
+    
+    console.log("Final response generated. Process complete.");
 
     return NextResponse.json({ 
       code: finalResponse,
@@ -210,7 +222,14 @@ async function callOpenrouter(model: string, input: string) {
     );
     
     if (response.data && response.data.choices && response.data.choices[0]) {
-      return response.data.choices[0].message.content;
+      const content = response.data.choices[0].message.content;
+      
+      // Log model response with clear separation
+      console.log(`\n========== RESPONSE FROM ${model} ==========`);
+      console.log(content.substring(0, 500) + (content.length > 500 ? '...' : ''));
+      console.log('==========================================\n');
+      
+      return content;
     } else {
       console.warn("Unexpected response format:", JSON.stringify(response.data));
       return "Unexpected API response format";

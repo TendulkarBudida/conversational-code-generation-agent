@@ -13,7 +13,7 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className="text-white">Redirecting to sign in...</div>
+      <div className="text-white">Redirecting to Mugen Code sign in...</div>
     </div>
   );
 }

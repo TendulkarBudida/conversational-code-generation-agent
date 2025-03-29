@@ -51,7 +51,13 @@ export default function SignIn() {
       });
       
       const result = await signInWithPopup(auth, provider);
-      console.log("Signed in successfully:", result.user);
+      
+      // Log the user object to check for profile information
+      console.log("Signed in successfully. User object:", result.user);
+      console.log("Display Name:", result.user.displayName);
+      console.log("Email:", result.user.email);
+      console.log("Photo URL:", result.user.photoURL);
+      
       router.push("/chat");
     } catch (error: any) {
       console.error("Error signing in with Google:", error);
@@ -83,7 +89,7 @@ export default function SignIn() {
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-gray-800 rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-semibold mb-6 text-white text-center">Sign In</h1>
+        <h1 className="text-2xl font-semibold mb-6 text-white text-center">Sign In to Mugen Code</h1>
         
         {error && (
           <div className="mb-4 p-3 bg-red-500/20 border border-red-500 rounded text-red-200 text-sm">
