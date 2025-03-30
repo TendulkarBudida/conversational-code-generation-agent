@@ -294,8 +294,8 @@ export function ChatInterface({
                         </AvatarFallback>
                       )
                     ) : (
-                      <div className="bg-white h-full w-full flex items-center justify-center border-2 border-blue-100 rounded-full text-xs font-semibold text-blue-600">
-                        AI
+                      <div className="bg-white text-3xl h-full w-full flex items-center justify-center border-2 border-blue-100 rounded-full text-blue-600 font-bold">
+                        ∞
                       </div>
                     )}
                   </Avatar>
