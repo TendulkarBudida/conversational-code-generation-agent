@@ -126,31 +126,31 @@ export function ChatInterface({
           components={{
             code({ node, inline, className, children, ...props }) {
               if (!inline) {
-                // Render code blocks as plain text
-                return (
-                  <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded text-sm overflow-x-auto">
-                    <code {...props}>{String(children)}</code>
-                  </pre>
-                );
+          // Render code blocks as plain text
+          return (
+            <pre className="bg-gray-50 p-4 rounded text-sm overflow-x-auto">
+              <code {...props}>{String(children)}</code>
+            </pre>
+          );
               }
 
               // Render inline code as plain text
               return (
-                <code
-                  className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono"
-                  {...props}
-                >
-                  {children}
-                </code>
+          <code
+            className="bg-gray-50 px-1 py-0.5 rounded text-sm font-mono"
+            {...props}
+          >
+            {children}
+          </code>
               );
             },
             // Ensure links open in new tab
             a: ({ node, ...props }) => (
               <a
-                {...props}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+          {...props}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline"
               />
             ),
             // Style lists properly
@@ -174,18 +174,18 @@ export function ChatInterface({
             p: ({ node, children, ...props }) => {
               const childrenArray = Array.isArray(children) ? children : [children];
               const containsOnlyCodeBlock = childrenArray.some(
-                (child) =>
-                  typeof child === "object" &&
-                  child !== null &&
-                  "type" in child &&
-                  (child.type === "pre" ||
-                    (child.props &&
-                      child.props.node &&
-                      child.props.node.tagName === "pre"))
+          (child) =>
+            typeof child === "object" &&
+            child !== null &&
+            "type" in child &&
+            (child.type === "pre" ||
+              (child.props &&
+                child.props.node &&
+                child.props.node.tagName === "pre"))
               );
 
               if (containsOnlyCodeBlock) {
-                return <>{children}</>;
+          return <>{children}</>;
               }
 
               return <p className=" " {...props}>{children}</p>;
@@ -197,8 +197,8 @@ export function ChatInterface({
             // Style blockquotes
             blockquote: ({ node, ...props }) => (
               <blockquote
-                className="border-l-4 border-gray-300 dark:border-gray-700 pl-4 italic my-2"
-                {...props}
+          className="border-l-4 border-gray-200 pl-4 italic my-2"
+          {...props}
               />
             ),
           }}
