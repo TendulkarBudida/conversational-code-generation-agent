@@ -64,7 +64,8 @@ export default function ChatPage() {
     if (!user) return;
 
     try {
-      const newConversation = await startNewChat(user.uid);
+      // Remove the user.uid parameter to use the default title
+      const newConversation = await startNewChat();
       if (newConversation) {
         setConversations(prev => [newConversation, ...prev]);
         setSelectedConversationId(newConversation.id);

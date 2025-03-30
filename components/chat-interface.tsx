@@ -247,7 +247,7 @@ export function ChatInterface({
         >
           <MenuIcon size={18} />
         </button>
-        <h1 className="text-base md:text-lg font-semibold text-gray-800 truncate">Mugen Code Session</h1>
+        <h1 className="text-base md:text-lg font-semibold text-gray-800 truncate">Conversational Code Generation Agent</h1>
       </div>
       
       <ScrollArea className="flex-1 px-2 md:px-6">
