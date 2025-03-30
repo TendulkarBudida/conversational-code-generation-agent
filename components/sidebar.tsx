@@ -184,7 +184,7 @@ export function Sidebar({
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <div className="bg-blue-500 h-8 w-8 rounded-full flex items-center justify-center">
-                  <MessageSquare className="h-4 w-4 text-white" />
+                  <span className="text-white text-3xl font-bold">∞</span>
                 </div>
                 <h1 className="font-bold text-xl text-gray-800">Mugen Code</h1>
               </div>

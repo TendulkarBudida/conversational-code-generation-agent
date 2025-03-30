@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "@/lib/AuthContext";
 import { Sidebar } from "@/components/sidebar";
 import { ChatInterface } from "@/components/chat-interface";
-import { MessageSquare } from "lucide-react";
 import { 
   getAllChats, 
   startNewChat, 
@@ -302,7 +301,7 @@ export default function ChatPage() {
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="bg-blue-500 h-12 w-12 rounded-full flex items-center justify-center animate-pulse">
-            <MessageSquare className="h-6 w-6 text-white" />
+            <span className="text-white text-5xl font-bold">∞</span>
           </div>
           <div className="text-gray-600">Loading your conversations...</div>
         </div>

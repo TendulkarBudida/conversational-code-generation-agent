@@ -255,7 +255,7 @@ export function ChatInterface({
           <div className="flex-1 flex flex-col items-center justify-center h-[50vh]">
             <div className="text-center max-w-md bg-white p-4 md:p-8 rounded-2xl shadow-sm border border-gray-100 mx-2">
               <div className="bg-blue-50 p-3 rounded-full w-12 h-12 md:w-14 md:h-14 mx-auto mb-4 flex items-center justify-center">
-                <MessageSquare className="h-6 w-6 md:h-7 md:w-7 text-blue-500" />
+                <span className="text-blue-500 text-3xl md:text-6xl font-bold">∞</span>
               </div>
               <h1 className="text-xl md:text-2xl font-bold mb-2 text-gray-800">Welcome to Mugen Code</h1>
               <p className="text-gray-500 text-sm md:text-base mb-4">
@@ -356,8 +356,8 @@ export function ChatInterface({
         {isGenerating && (
           <div className="flex items-center gap-2 md:gap-3 my-4 md:my-6 fade-in">
             <Avatar className="h-8 w-8 md:h-9 md:w-9 flex-shrink-0">
-              <div className="bg-white h-full w-full flex items-center justify-center border-2 border-blue-100 rounded-full text-xs font-semibold text-blue-600">
-                AI
+              <div className="bg-white h-full w-full flex items-center justify-center border-2 border-blue-100 rounded-full text-blue-600 font-bold">
+                ∞
               </div>
             </Avatar>
             <div className="bg-white border border-gray-100 shadow-sm message-bubble py-2 md:py-3 px-3 md:px-4">

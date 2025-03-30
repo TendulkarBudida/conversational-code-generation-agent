@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuth } from "@/lib/AuthContext";
-import { MessageSquare } from "lucide-react";
 
 export default function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
@@ -78,7 +77,7 @@ export default function SignIn() {
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="rounded-full bg-blue-500 p-3 animate-pulse">
-            <MessageSquare className="h-6 w-6 text-white" />
+            <span className="text-white text-4xl font-bold">∞</span>
           </div>
           <div className="text-gray-500 text-sm">Loading...</div>
         </div>
@@ -97,8 +96,8 @@ export default function SignIn() {
       <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-500 to-blue-600 p-8 flex-col justify-between">
         <div>
           <div className="flex items-center gap-3 text-white">
-            <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
-              <MessageSquare className="h-6 w-6 text-white" />
+            <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm flex items-center justify-center w-10 h-10">
+              <span className="text-white text-4xl font-bold">∞</span>
             </div>
             <h1 className="text-xl font-bold text-white">Mugen Code</h1>
           </div>
@@ -123,8 +122,8 @@ export default function SignIn() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8">
         <div className="w-full max-w-md">
           <div className="md:hidden flex items-center gap-3 mb-8 justify-center">
-            <div className="bg-blue-500 p-2 rounded-full">
-              <MessageSquare className="h-6 w-6 text-white" />
+            <div className="bg-blue-500 p-2 rounded-full flex items-center justify-center w-10 h-10">
+              <span className="text-white text-4xl font-bold">∞</span>
             </div>
             <h1 className="text-xl font-bold text-gray-800">Mugen Code</h1>
           </div>
