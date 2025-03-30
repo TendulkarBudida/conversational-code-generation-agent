@@ -5,11 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { 
-  ThumbsUp, 
-  ThumbsDown, 
-  Copy, 
-  MoreVertical, 
+import {
+  Copy,
   RefreshCw, 
   Send,
   Loader,
@@ -120,86 +117,117 @@ export function ChatInterface({
   // Function to render message content with proper markdown and code highlighting
   const renderMessageContent = (content: string) => {
     return (
-      <div className="prose prose-sm max-w-none dark:prose-invert prose-pre:p-0">
+      <div className="prose prose-sm max-w-none">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            code({ node, inline, className, children, ...props }) {
+            code({ inline, className, children, ...props }: { inline?: boolean; className?: string; children?: React.ReactNode }) {
+              const match = /language-(\w+)/.exec(className || "");
+              const language = match ? match[1] : "";
+              
               if (!inline) {
-          // Render code blocks as plain text
-          return (
-            <pre className="bg-gray-50 p-4 rounded text-sm overflow-x-auto">
-              <code {...props}>{String(children)}</code>
-            </pre>
-          );
+                return (
+                  <div className="not-prose my-2">
+                    <div className="flex items-center justify-between bg-gray-50 px-4 py-1 rounded-t-md border border-b-0 border-gray-200">
+                      <span className="text-xs font-medium text-gray-500">{language || "code"}</span>
+                      <button 
+                        onClick={() => handleCopyToClipboard(String(children).replace(/\n$/, ""))}
+                        className="text-gray-400 hover:text-blue-500 transition-colors"
+                        title="Copy code"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                    <pre className="bg-gray-50 p-4 rounded-b-md text-sm overflow-x-auto border border-gray-200">
+                      <code className={className} {...props}>{String(children).replace(/\n$/, "")}</code>
+                    </pre>
+                  </div>
+                );
               }
-
-              // Render inline code as plain text
+              
               return (
-          <code
-            className="bg-gray-50 px-1 py-0.5 rounded text-sm font-mono"
-            {...props}
-          >
-            {children}
-          </code>
+                <code
+                  className="bg-gray-50 px-1.5 py-0.5 rounded text-sm font-mono border border-gray-200 text-gray-800"
+                  {...props}
+                >
+                  {children}
+                </code>
               );
             },
             // Ensure links open in new tab
             a: ({ node, ...props }) => (
               <a
-          {...props}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline"
+                {...props}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline font-medium"
               />
             ),
             // Style lists properly
             ul: ({ node, ...props }) => (
-              <ul className="list-disc pl-6 my-2" {...props} />
+              <ul className="list-disc pl-6 my-2 space-y-1" {...props} />
             ),
             ol: ({ node, ...props }) => (
-              <ol className="list-decimal pl-6 my-2" {...props} />
+              <ol className="list-decimal pl-6 my-2 space-y-1" {...props} />
             ),
             // Proper heading styles
             h1: ({ node, ...props }) => (
-              <h1 className="text-xl font-bold mt-6 mb-2" {...props} />
+              <h1 className="text-xl font-bold mt-6 mb-2 text-gray-800 border-b border-gray-100 pb-1" {...props} />
             ),
             h2: ({ node, ...props }) => (
-              <h2 className="text-lg font-bold mt-5 mb-2" {...props} />
+              <h2 className="text-lg font-bold mt-5 mb-2 text-gray-800" {...props} />
             ),
             h3: ({ node, ...props }) => (
-              <h3 className="text-base font-bold mt-4 mb-2" {...props} />
+              <h3 className="text-base font-bold mt-4 mb-2 text-gray-800" {...props} />
             ),
-            // Fix paragraph component to prevent invalid nesting
+            // Style paragraphs
             p: ({ node, children, ...props }) => {
-              const childrenArray = Array.isArray(children) ? children : [children];
-              const containsOnlyCodeBlock = childrenArray.some(
-          (child) =>
-            typeof child === "object" &&
-            child !== null &&
-            "type" in child &&
-            (child.type === "pre" ||
-              (child.props &&
-                child.props.node &&
-                child.props.node.tagName === "pre"))
-              );
-
-              if (containsOnlyCodeBlock) {
-          return <>{children}</>;
+              // Check if children contains only a pre element to avoid nesting p > pre
+              const childrenArray = React.Children.toArray(children);
+              if (childrenArray.some(child => 
+                React.isValidElement(child) && 
+                (child.type === 'pre' || child.props?.className?.includes('not-prose'))
+              )) {
+                return <>{children}</>;
               }
-
-              return <p className=" " {...props}>{children}</p>;
-            },
-            // Handle pre elements directly to avoid nesting issues
-            pre: ({ node, ...props }) => {
-              return <div className="not-prose" {...props}>{props.children}</div>;
+              return <div className=" p mb-2 text-gray-700 leading-relaxed" {...props}>{children}</div>;
             },
             // Style blockquotes
             blockquote: ({ node, ...props }) => (
               <blockquote
-          className="border-l-4 border-gray-200 pl-4 italic my-2"
-          {...props}
+                className="border-l-4 border-blue-100 bg-blue-50/40 pl-4 py-1 italic my-3 text-gray-700 rounded-sm"
+                {...props}
               />
+            ),
+            
+            // Style tables
+            table: ({ ...props }) => (
+              <div className="overflow-x-auto my-4 border border-gray-200 rounded-md">
+                <table className="min-w-full divide-y divide-gray-200" {...props} />
+              </div>
+            ),
+            thead: ({ ...props }) => (
+              <thead className="bg-gray-50" {...props} />
+            ),
+            tr: ({ ...props }) => (
+              <tr className="border-b border-gray-200 last:border-b-0" {...props} />
+            ),
+            th: ({ ...props }) => (
+              <th className="px-3 py-2 text-left text-xs font-medium text-gray-700 uppercase tracking-wider" {...props} />
+            ),
+            td: ({ ...props }) => (
+              <td className="px-3 py-2 text-sm text-gray-700" {...props} />
+            ),
+            // Style horizontal rules
+            hr: ({ ...props }) => (
+              <hr className="my-4 border-t border-gray-200" {...props} />
+            ),
+            // Style strong and emphasis
+            strong: ({ ...props }) => (
+              <strong className="font-semibold text-gray-900" {...props} />
+            ),
+            em: ({ ...props }) => (
+              <em className="italic text-gray-800" {...props} />
             ),
           }}
         >
