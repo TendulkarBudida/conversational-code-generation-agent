@@ -178,7 +178,7 @@ export function Sidebar({
       <div className={`fixed md:relative h-full z-30 transition-all duration-300 ease-in-out ${
         isSidebarCollapsed 
           ? "transform -translate-x-full md:translate-x-0 md:w-0 md:min-w-0 md:overflow-hidden" 
-          : "transform translate-x-0 w-[85vw] max-w-xs md:w-[250px]"
+          : "transform translate-x-0 w-[85vw] max-w-xs md:w-[500px]"
       }`}>
         <div className="border-r border-gray-100 flex flex-col h-full bg-white w-full">
           <div className="p-4 bg-white shadow-sm">
