@@ -25,29 +25,29 @@ const AvatarImage = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
 >(({ className, src, ...props }, ref) => {
   const [imageError, setImageError] = React.useState(false);
-  const [retryCount, setRetryCount] = React.useState(0);
-
-  const retryFetch = (url, retries = 3, delay = 1000) => {
-    if (retries === 0) {
-      setImageError(true);
-      return;
-    }
-
-    const img = new Image();
-    img.onload = () => {
-      setImageError(false);
-      setRetryCount(0);
-    };
-    img.onerror = () => {
-      setTimeout(() => {
-        setRetryCount((prev) => prev + 1);
-        retryFetch(url, retries - 1, delay * 2); // Exponential backoff
-      }, delay);
-    };
-    img.src = url;
-  };
+  const [, setRetryCount] = React.useState(0);
 
   React.useEffect(() => {
+    const retryFetch = (url: string, retries = 3, delay = 1000) => {
+      if (retries === 0) {
+        setImageError(true);
+        return;
+      }
+
+      const img = new Image();
+      img.onload = () => {
+        setImageError(false);
+        setRetryCount(0);
+      };
+      img.onerror = () => {
+        setTimeout(() => {
+          setRetryCount((prev) => prev + 1);
+          retryFetch(url, retries - 1, delay * 2); // Exponential backoff
+        }, delay);
+      };
+      img.src = url;
+    };
+
     if (src) {
       retryFetch(src);
     }

@@ -121,7 +121,7 @@ export function ChatInterface({
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            code({ inline, className, children, ...props }: { inline?: boolean; className?: string; children?: React.ReactNode }) {
+            code({ inline, className, children, ...props }: { inline?: boolean; className?: string; children?: React.ReactNode; }) {
               const match = /language-(\w+)/.exec(className || "");
               const language = match ? match[1] : "";
               
@@ -155,7 +155,7 @@ export function ChatInterface({
               );
             },
             // Ensure links open in new tab
-            a: ({ node, ...props }) => (
+            a: ({ ...props }) => (
               <a
                 {...props}
                 target="_blank"
@@ -164,36 +164,36 @@ export function ChatInterface({
               />
             ),
             // Style lists properly
-            ul: ({ node, ...props }) => (
+            ul: ({ ...props }) => (
               <ul className="list-disc pl-6 my-2 space-y-1" {...props} />
             ),
-            ol: ({ node, ...props }) => (
+            ol: ({ ...props }) => (
               <ol className="list-decimal pl-6 my-2 space-y-1" {...props} />
             ),
             // Proper heading styles
-            h1: ({ node, ...props }) => (
+            h1: ({ ...props }) => (
               <h1 className="text-xl font-bold mt-6 mb-2 text-gray-800 border-b border-gray-100 pb-1" {...props} />
             ),
-            h2: ({ node, ...props }) => (
+            h2: ({ ...props }) => (
               <h2 className="text-lg font-bold mt-5 mb-2 text-gray-800" {...props} />
             ),
-            h3: ({ node, ...props }) => (
+            h3: ({ ...props }) => (
               <h3 className="text-base font-bold mt-4 mb-2 text-gray-800" {...props} />
             ),
             // Style paragraphs
-            p: ({ node, children, ...props }) => {
+            p: ({ children, ...props }) => {
               // Check if children contains only a pre element to avoid nesting p > pre
               const childrenArray = React.Children.toArray(children);
               if (childrenArray.some(child => 
                 React.isValidElement(child) && 
-                (child.type === 'pre' || child.props?.className?.includes('not-prose'))
+                (React.isValidElement(child) && (child.type === 'pre' || (child.props && typeof child.props === 'object' && 'className' in child.props && typeof child.props.className === 'string' && child.props.className.includes('not-prose'))))
               )) {
                 return <>{children}</>;
               }
               return <div className=" p mb-2 text-gray-700 leading-relaxed" {...props}>{children}</div>;
             },
             // Style blockquotes
-            blockquote: ({ node, ...props }) => (
+            blockquote: ({ ...props }) => (
               <blockquote
                 className="border-l-4 border-blue-100 bg-blue-50/40 pl-4 py-1 italic my-3 text-gray-700 rounded-sm"
                 {...props}

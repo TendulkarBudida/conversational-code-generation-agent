@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/AuthContext";
 import { SidebarProvider } from "@/context/SidebarContext";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 

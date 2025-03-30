@@ -31,7 +31,6 @@ export function Sidebar({
   conversations,
   onSelectConversation,
   onNewChat,
-  onClearConversations,
   onDeleteConversation,
   selectedConversationId,
 }: SidebarProps) {
@@ -117,7 +116,7 @@ export function Sidebar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 hover:bg-red-50 md:opacity-0 opacity-100"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 group-hover:opacity-100 text-gray-400 hover:text-red-500 hover:bg-red-50 md:opacity-0 opacity-100"
                 onClick={(e) => {
                   e.stopPropagation();
                   if (confirm("Delete this conversation?")) {

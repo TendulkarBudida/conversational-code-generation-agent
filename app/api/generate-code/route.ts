@@ -23,8 +23,10 @@ export async function POST(request: NextRequest) {
     console.log("Generated code:", output.substring(0, 100) + "...");
     
     return NextResponse.json({ code: output });
-  } catch (error: any) {
-    console.error("Error in code generation:", error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+    return NextResponse.json({ error: "Failed to generate code", details: error.message || String(error) }, { status: 500 });
+    }
     return NextResponse.json({ error: "Failed to generate code", details: String(error) }, { status: 500 });
   }
 }

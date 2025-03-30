@@ -50,6 +50,9 @@ export default function SignIn() {
         prompt: 'select_account'
       });
       
+      if (!auth) {
+        throw new Error("Firebase authentication is not initialized.");
+      }
       const result = await signInWithPopup(auth, provider);
       
       // Log the user object to check for profile information
@@ -59,13 +62,17 @@ export default function SignIn() {
       console.log("Photo URL:", result.user.photoURL);
       
       router.push("/chat");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error signing in with Google:", error);
       
-      if (error.code === 'auth/configuration-not-found') {
-        setError("Firebase Google authentication is not configured correctly. Please make sure Google authentication is enabled in the Firebase Console.");
+      if (error instanceof Error) {
+        if ((error as { code?: string }).code === 'auth/configuration-not-found') {
+          setError("Firebase Google authentication is not configured correctly. Please make sure Google authentication is enabled in the Firebase Console.");
+        } else {
+          setError(`Failed to sign in: ${error.message || "Unknown error"}`);
+        }
       } else {
-        setError(`Failed to sign in: ${error.message || "Unknown error"}`);
+        setError("An unknown error occurred.");
       }
     } finally {
       setIsLoading(false);
