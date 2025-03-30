@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "@/lib/AuthContext";
 import { Sidebar } from "@/components/sidebar";
-import { ChatInterface, Message } from "@/components/chat-interface";
+import { ChatInterface } from "@/components/chat-interface";
 import { MessageSquare } from "lucide-react";
 import { 
   getAllChats, 
@@ -37,7 +37,7 @@ export default function ChatPage() {
       if (user) {
         setIsLoading(true);
         try {
-          const loadedConversations = await getAllChats(user.uid);
+          const loadedConversations = await getAllChats();
           setConversations(loadedConversations);
 
           // Select the most recent conversation if available
