@@ -10,7 +10,6 @@ import {
   RefreshCw, 
   Send,
   Loader,
-  MessageSquare,
   MenuIcon
 } from "lucide-react"
 import { useAuth } from "@/lib/AuthContext"

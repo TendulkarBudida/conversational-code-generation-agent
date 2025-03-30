@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PlusIcon, LogOut, MessageSquare, Trash2, X } from "lucide-react";
+import { PlusIcon, LogOut, Trash2, X } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth, getUserPhotoWithFallback } from "@/lib/firebase";
 import { useAuth } from "@/lib/AuthContext";
