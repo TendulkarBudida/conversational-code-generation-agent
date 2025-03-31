@@ -49,4 +49,6 @@ next-env.d.ts
 .env.local
 
 /backend/.env
+/backend/old_app.py
+
 .qodo
