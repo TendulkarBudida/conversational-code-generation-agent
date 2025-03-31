@@ -1,3 +1,8 @@
+// This code is for using this project without running a backend separately.
+
+
+
+
 // import { NextRequest, NextResponse } from "next/server";
 // import axios from "axios";
 
