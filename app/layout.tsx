@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <title>Mugen Code</title>
-        <meta name="description" content="AI Chatbot Interface" />
+        <meta name="description" content="Conversational Code Generation Agent" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" />
       </head>
