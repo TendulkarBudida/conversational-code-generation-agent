@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     console.log("Processing query:", query);
     
     // Hit the local API endpoint with the user's prompt
-    const response = await axios.get("http://127.0.0.1:8000/generate", {
+    const response = await axios.get(process.env.NEXT_PUBLIC_HF_API_LINK as string, {
       params: { query }
     });
     

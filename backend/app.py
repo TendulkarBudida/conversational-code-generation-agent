@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Query
 import httpx
 import os
 import re
-from typing import Dict, Any, Optional
+from typing import Dict
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
