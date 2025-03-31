@@ -44,7 +44,7 @@ next-env.d.ts
 
 
 
-/md_files
+/md_files/
 
 .env.local
 
