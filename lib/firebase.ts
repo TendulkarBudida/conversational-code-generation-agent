@@ -49,7 +49,7 @@ export { auth, db };
 export default app;
 
 // Helpers to deal with user data
-export function getUserPhotoWithFallback(user: any): string {
+export function getUserPhotoWithFallback(user: User | null): string {
   if (user?.photoURL) {
     try {
       const url = new URL(user.photoURL);
