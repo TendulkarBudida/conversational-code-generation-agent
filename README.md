@@ -1,4 +1,4 @@
-# Mugen Code – Conversational Code Generation Agent
+# Mugen Code – Multi-LLM Code Generation Chatbot
 
 This project is a web‑based Conversational Code Generation Agent that lets you generate production‑ready code using natural language queries. It features a Next.js frontend with Firebase authentication and a FastAPI backend that leverages OpenRouter’s models for code generation.
 
